@@ -940,6 +940,23 @@ export default function Home() {
     },
   ]
 
+  // Initialize theme from localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedTheme = localStorage.getItem("theme")
+      if (storedTheme === "dark") setIsDarkMode(true)
+      if (storedTheme === "light") setIsDarkMode(false)
+    }
+  }, [])
+
+  const handleThemeToggle = () => {
+    const next = !isDarkMode
+    setIsDarkMode(next)
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light")
+    } catch {}
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Beautiful New Background */}
@@ -973,7 +990,7 @@ export default function Home() {
       {/* Responsive Header */}
       <ResponsiveHeader
         isDark={isDarkMode}
-        onThemeToggle={() => setIsDarkMode(!isDarkMode)}
+        onThemeToggle={handleThemeToggle}
         notificationsEnabled={notificationsEnabled}
         onNotificationToggle={handleNotificationToggle}
         showQibla={showQibla}

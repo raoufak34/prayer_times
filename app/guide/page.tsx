@@ -1,11 +1,22 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Bell, Compass, Clock, MapPin, CheckCircle } from "lucide-react"
 import Link from "next/link"
 
 export default function GuidePage() {
+  const [isDark, setIsDark] = useState<boolean>(false)
+  // Sync theme from localStorage
+  if (typeof window !== "undefined") {
+    // avoid hydration issues: read on client only
+    try {
+      const t = localStorage.getItem("theme")
+      if (t === "dark" && !isDark) setIsDark(true)
+      if (t === "light" && isDark) setIsDark(false)
+    } catch {}
+  }
   const steps = [
     {
       icon: <Clock className="w-6 h-6 text-emerald-500" />,
@@ -35,7 +46,7 @@ export default function GuidePage() {
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/professional-islamic-bg.png)" }}
       />
-      <div className="fixed inset-0 bg-gradient-to-br from-slate-900/75 via-gray-900/70 to-slate-900/80" />
+      <div className={`fixed inset-0 ${isDark ? "bg-gradient-to-br from-slate-900/75 via-gray-900/70 to-slate-900/80" : "bg-gradient-to-br from-blue-900/60 via-indigo-900/55 to-purple-900/60"}`} />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-10 max-w-7xl">
         <div className="text-center mb-10">

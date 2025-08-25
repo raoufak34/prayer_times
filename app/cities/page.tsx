@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -20,6 +20,14 @@ const cities: string[] = [
 ]
 
 export default function CitiesPage() {
+  // Persisted theme support
+  const [isDark, setIsDark] = useState<boolean>(false)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const t = localStorage.getItem("theme")
+      setIsDark(t === "dark")
+    }
+  }, [])
   const [query, setQuery] = useState<string>("")
 
   const filtered = useMemo(() => {
@@ -34,7 +42,7 @@ export default function CitiesPage() {
         className="fixed inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url(/mosque-minaret-bg.png)" }}
       />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-900/60 via-indigo-900/55 to-purple-900/60" />
+      <div className={`fixed inset-0 ${isDark ? "bg-gradient-to-br from-slate-900/75 via-gray-900/70 to-slate-900/80" : "bg-gradient-to-br from-blue-900/60 via-indigo-900/55 to-purple-900/60"}`} />
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 py-10 max-w-7xl">
         <div className="text-center mb-10">
